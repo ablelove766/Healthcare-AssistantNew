@@ -38,6 +38,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+
 class ChatbotMCPIntegration:
     """Integration layer between chatbot, Groq LLM, and MCP server."""
 
@@ -234,7 +235,11 @@ if __name__ == '__main__':
     print("🚀 Starting server...")
 
     try:
-        socketio.run(app, debug=True, host='0.0.0.0', port=5000)
+        # socketio.run(app, debug=True, host='0.0.0.0', port=5000)
+        # Only runs when you run locally: `python app.py`
+      port = int(os.environ.get("PORT", 5000))
+      socketio.run(app, host='0.0.0.0', port=port, allow_unsafe_werkzeug=True)
+      print("🚀 Starting server...")
     except Exception as e:
         print(f"❌ Error starting server: {e}")
         import traceback
