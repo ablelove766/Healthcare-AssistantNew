@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Assistant</title>
+    
+    <!-- Microsoft Teams SDK -->
+    <script src="https://res.cdn.office.net/teams-js/2.0.0/js/MicrosoftTeams.min.js"></script>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/teams.css') }}" rel="stylesheet">
+</head>
+<body class="teams-app">
+    <div class="container-fluid h-100 p-0">
+        <!-- Compact Header for Teams -->
+        <div class="teams-header bg-white border-bottom p-2">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-robot text-primary fs-4 me-2"></i>
+                <span class="fw-bold">Healthcare Assistant</span>
+                <button class="btn btn-sm btn-outline-secondary ms-auto" id="clear-chat">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div class="teams-chat-messages" id="chat-messages">
+            <div class="message bot-message">
+                <div class="message-content">
+                    <div class="message-bubble">
+                        <p class="mb-1">👋 Healthcare Assistant ready!</p>
+                        <p class="mb-0">Ask me about patients or type <strong>'help'</strong> for commands.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Input -->
+        <div class="teams-chat-input bg-white border-top p-2">
+            <form id="chat-form">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" id="message-input" 
+                           placeholder="Ask about patients..." autocomplete="off">
+                    <button class="btn btn-primary" type="submit" id="send-button">
+                        <i class="bi bi-send"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/teams.js') }}"></script>
+</body>
+</html>

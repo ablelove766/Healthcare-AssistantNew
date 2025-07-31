@@ -1,0 +1,61 @@
+/* Teams-specific styles */
+.teams-app {
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f2f1;
+}
+
+.teams-header {
+    height: 48px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.teams-chat-messages {
+    height: calc(100vh - 96px);
+    overflow-y: auto;
+    padding: 12px;
+}
+
+.teams-chat-input {
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.message {
+    margin-bottom: 12px;
+    max-width: 100%;
+}
+
+.message-bubble {
+    background: white;
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    font-size: 14px;
+}
+
+.user-message .message-bubble {
+    background: #6264a7;
+    color: white;
+    margin-left: auto;
+    max-width: 80%;
+}
+
+.bot-message .message-bubble {
+    background: white;
+    border: 1px solid #e1dfdd;
+    max-width: 90%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .teams-chat-messages {
+        padding: 8px;
+    }
+    
+    .message-bubble {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+}

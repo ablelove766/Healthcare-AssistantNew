@@ -1,0 +1,43 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.16",
+    "version": "1.0.0",
+    "id": "healthcare-chatbot-app",
+    "packageName": "com.healthcare.chatbot",
+    "developer": {
+        "name": "Healthcare Team",
+        "websiteUrl": "https://healthcare-assistant-hla0.onrender.com",
+        "privacyUrl": "https://healthcare-assistant-hla0.onrender.com/privacy",
+        "termsOfUseUrl": "https://healthcare-assistant-hla0.onrender.com/terms"
+    },
+    "icons": {
+        "color": "icon-color.png",
+        "outline": "icon-outline.png"
+    },
+    "name": {
+        "short": "Healthcare Assistant",
+        "full": "Healthcare Patient Management Assistant"
+    },
+    "description": {
+        "short": "AI-powered healthcare assistant for patient management",
+        "full": "Ultra-fast AI assistant powered by Groq for healthcare patient information and management tasks"
+    },
+    "accentColor": "#6264A7",
+    "staticTabs": [
+        {
+            "entityId": "healthcare-chat",
+            "name": "Chat",
+            "contentUrl": "https://healthcare-assistant-hla0.onrender.com/teams",
+            "websiteUrl": "https://healthcare-assistant-hla0.onrender.com",
+            "scopes": ["personal", "team"]
+        }
+    ],
+    "configurableTabs": [
+        {
+            "configurationUrl": "https://healthcare-assistant-hla0.onrender.com/teams/config",
+            "scopes": ["team", "groupchat"]
+        }
+    ],
+    "permissions": ["identity", "messageTeamMembers"],
+    "validDomains": ["healthcare-assistant-hla0.onrender.com"]
+}

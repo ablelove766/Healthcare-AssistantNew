@@ -8,7 +8,7 @@ import os
 import sys
 import asyncio
 import json
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, make_response
 from flask_socketio import SocketIO, emit
 from groq_service import GroqService
 from dotenv import load_dotenv
@@ -38,6 +38,26 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+@app.after_request
+def add_security_headers(response):
+    """Add security headers for Teams integration."""
+    # Allow embedding in Teams iframe
+    response.headers['X-Frame-Options'] = 'ALLOW-FROM https://teams.microsoft.com'
+    response.headers['Content-Security-Policy'] = (
+        "frame-ancestors 'self' https://teams.microsoft.com https://*.teams.microsoft.com "
+        "https://*.skype.com https://*.microsoft.com; "
+        "default-src 'self' https:; "
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.socket.io "
+        "https://res.cdn.office.net; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+        "img-src 'self' data: https:; "
+        "connect-src 'self' ws: wss: https:;"
+    )
+    # Add CORS headers for Teams
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
 
 class ChatbotMCPIntegration:
     """Integration layer between chatbot, Groq LLM, and MCP server."""
@@ -123,6 +143,64 @@ mcp_integration = ChatbotMCPIntegration()
 def index():
     """Render the main chat interface."""
     return render_template('index.html')
+
+@app.route('/teams')
+def teams_index():
+    """Render Teams-optimized chat interface."""
+    return render_template('teams.html')
+
+@app.route('/teams/config')
+def teams_config():
+    """Teams app configuration page."""
+    return render_template('teams_config.html')
+
+@app.route('/privacy')
+def privacy():
+    """Privacy policy page for Teams app."""
+    return """
+    <html>
+    <head><title>Privacy Policy - Healthcare Assistant</title></head>
+    <body style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">
+        <h1>Privacy Policy</h1>
+        <p>This Healthcare Assistant application processes healthcare-related queries to provide information assistance.</p>
+        <h2>Data Collection</h2>
+        <p>We collect minimal data necessary for the service:</p>
+        <ul>
+            <li>Chat messages for processing and response generation</li>
+            <li>Basic usage analytics</li>
+        </ul>
+        <h2>Data Usage</h2>
+        <p>Your data is used solely to provide healthcare assistance and is not shared with third parties.</p>
+        <h2>Data Retention</h2>
+        <p>Chat sessions are temporary and not permanently stored.</p>
+        <p>Last updated: January 2024</p>
+    </body>
+    </html>
+    """
+
+@app.route('/terms')
+def terms():
+    """Terms of use page for Teams app."""
+    return """
+    <html>
+    <head><title>Terms of Use - Healthcare Assistant</title></head>
+    <body style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">
+        <h1>Terms of Use</h1>
+        <p>By using this Healthcare Assistant application, you agree to the following terms:</p>
+        <h2>Service Description</h2>
+        <p>This application provides AI-powered assistance for healthcare-related information queries.</p>
+        <h2>Limitations</h2>
+        <ul>
+            <li>This service is for informational purposes only</li>
+            <li>Not a substitute for professional medical advice</li>
+            <li>Always consult healthcare professionals for medical decisions</li>
+        </ul>
+        <h2>Acceptable Use</h2>
+        <p>Users must use this service responsibly and in compliance with applicable laws and regulations.</p>
+        <p>Last updated: January 2024</p>
+    </body>
+    </html>
+    """
 
 @app.route('/api/chat', methods=['POST'])
 def chat_api():
@@ -244,3 +322,5 @@ if __name__ == '__main__':
         print(f"❌ Error starting server: {e}")
         import traceback
         traceback.print_exc()
+
+
